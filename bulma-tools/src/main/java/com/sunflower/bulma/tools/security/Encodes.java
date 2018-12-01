@@ -1,5 +1,6 @@
-package com.sunflower.bulma.tools;
+package com.sunflower.bulma.tools.security;
 
+import com.sunflower.bulma.tools.Exceptions;
 import lombok.NonNull;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Base64;
@@ -18,7 +19,7 @@ import java.net.URLEncoder;
  * 3.Commons-Lang的xml/html escape
  * 4.JDK提供的URLEncoder
  *
- * @author calvin
+ * @author fuyongde
  */
 public final class Encodes {
 
