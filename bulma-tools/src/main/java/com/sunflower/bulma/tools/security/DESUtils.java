@@ -1,6 +1,10 @@
 package com.sunflower.bulma.tools.security;
 
+import com.google.common.base.Charsets;
+import org.apache.commons.codec.binary.Base64;
+
 import javax.crypto.Cipher;
+import java.nio.charset.Charset;
 
 /**
  * @author fuyongde
@@ -11,8 +15,34 @@ public class DESUtils extends AbstractSecurity {
 
     private static final String DES = "DES";
     private static final int DES_KEY_SIZE_DEFAULT = 56;
+    private static final Charset CHARSET_DEFAULT = Charsets.UTF_8;
 
     private static final String DES_CBC = "DES/CBC/PKCS5Padding";
+
+    /**
+     * 使用AES加密原始字符串.
+     *
+     * @param plaintext 明文
+     * @param key   符合AES要求的密钥
+     * @return
+     */
+    public static String encrypt(String plaintext, String key) {
+        byte[] cipherBytes = encrypt(plaintext.getBytes(CHARSET_DEFAULT), key.getBytes(CHARSET_DEFAULT));
+        return Base64.encodeBase64String(cipherBytes);
+    }
+
+    /**
+     * 使用AES加密原始字符串.
+     *
+     * @param plaintext 明文
+     * @param key   符合AES要求的密钥
+     * @param iv    初始向量
+     * @return
+     */
+    public static String encrypt(String plaintext, String key, String iv) {
+        byte[] cipherBytes = encrypt(plaintext.getBytes(CHARSET_DEFAULT), key.getBytes(CHARSET_DEFAULT), iv.getBytes(CHARSET_DEFAULT));
+        return Base64.encodeBase64String(cipherBytes);
+    }
 
     /**
      * 使用AES加密原始字符串.
@@ -38,12 +68,36 @@ public class DESUtils extends AbstractSecurity {
     /**
      * 使用AES解密字符串, 返回原始字符串.
      *
+     * @param ciphertext 密文
+     * @param key        符合AES要求的密钥
+     * @return
+     */
+    public static String decrypt(String ciphertext, String key) {
+        byte[] decryptResult = decrypt(ciphertext.getBytes(CHARSET_DEFAULT), key.getBytes(CHARSET_DEFAULT));
+        return new String(decryptResult);
+    }
+
+    /**
+     * 使用AES解密字符串, 返回原始字符串.
+     *
+     * @param ciphertext 密文
+     * @param key        符合AES要求的密钥
+     * @param iv         初始向量
+     * @return 原文
+     */
+    public static String decrypt(String ciphertext, String key, String iv) {
+        byte[] decryptResult = decrypt(ciphertext.getBytes(CHARSET_DEFAULT), key.getBytes(CHARSET_DEFAULT), iv.getBytes(CHARSET_DEFAULT));
+        return new String(decryptResult);
+    }
+
+    /**
+     * 使用AES解密字符串, 返回原始字符串.
+     *
      * @param input Hex编码的加密字符串
      * @param key   符合AES要求的密钥
      */
-    public static String decrypt(byte[] input, byte[] key) {
-        byte[] decryptResult = des(input, key, Cipher.DECRYPT_MODE);
-        return new String(decryptResult);
+    public static byte[] decrypt(byte[] input, byte[] key) {
+        return des(input, key, Cipher.DECRYPT_MODE);
     }
 
     /**
@@ -53,9 +107,8 @@ public class DESUtils extends AbstractSecurity {
      * @param key   符合AES要求的密钥
      * @param iv    初始向量
      */
-    public static String decrypt(byte[] input, byte[] key, byte[] iv) {
-        byte[] decryptResult = des(input, key, iv, Cipher.DECRYPT_MODE);
-        return new String(decryptResult);
+    public static byte[] decrypt(byte[] input, byte[] key, byte[] iv) {
+        return des(input, key, iv, Cipher.DECRYPT_MODE);
     }
 
     /**

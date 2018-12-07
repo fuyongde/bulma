@@ -1,6 +1,12 @@
 package com.sunflower.bulma.tools.security;
 
+import com.google.common.base.Charsets;
+import com.google.common.base.Preconditions;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.StringUtils;
+
 import javax.crypto.Cipher;
+import java.nio.charset.Charset;
 import java.security.SecureRandom;
 
 /**
@@ -14,53 +20,119 @@ public final class AESUtils extends AbstractSecurity {
     private static final int AES_KEY_SIZE_DEFAULT = 128;
     private static final String AES_CBC = "AES/CBC/PKCS5Padding";
 
+    private static final Charset CHARSET_DEFAULT = Charsets.UTF_8;
+
     private static final int AES_IV_SIZE_DEFAULT = 16;
     private static SecureRandom random = new SecureRandom();
 
-    private AESUtils() {}
+    private AESUtils() {
+    }
+
 
     /**
      * 使用AES加密原始字符串.
      *
-     * @param input 原始输入字符数组
+     * @param plaintext 明文
      * @param key   符合AES要求的密钥
+     * @return 密文的
      */
-    public static byte[] encrypt(byte[] input, byte[] key) {
-        return aes(input, key, Cipher.ENCRYPT_MODE);
+    public static String encrypt(String plaintext, String key) {
+        Preconditions.checkArgument(StringUtils.isNotBlank(plaintext), "plaintext is blank");
+        Preconditions.checkArgument(StringUtils.isNotBlank(key), "aes key is blank");
+        byte[] cipherData = encrypt(plaintext.getBytes(CHARSET_DEFAULT), key.getBytes(CHARSET_DEFAULT));
+        return Base64.encodeBase64String(cipherData);
     }
 
     /**
      * 使用AES加密原始字符串.
      *
-     * @param input 原始输入字符数组
+     * @param plaintext 明文
      * @param key   符合AES要求的密钥
      * @param iv    初始向量
+     * @return 密文
      */
-    public static byte[] encrypt(byte[] input, byte[] key, byte[] iv) {
-        return aes(input, key, iv, Cipher.ENCRYPT_MODE);
+    public static String encrypt(String plaintext, String key, String iv) {
+        Preconditions.checkArgument(StringUtils.isNotBlank(plaintext), "plaintext is blank");
+        Preconditions.checkArgument(StringUtils.isNotBlank(key), "aes key is blank");
+        Preconditions.checkArgument(StringUtils.isNotBlank(key), "aes iv is blank");
+        byte[] cipherData = encrypt(plaintext.getBytes(CHARSET_DEFAULT), key.getBytes(CHARSET_DEFAULT), iv.getBytes(CHARSET_DEFAULT));
+        return Base64.encodeBase64String(cipherData);
     }
 
     /**
      * 使用AES解密字符串, 返回原始字符串.
      *
-     * @param input Hex编码的加密字符串
+     * @param ciphertext 密文byte数组
      * @param key   符合AES要求的密钥
+     * @return 明文byte数组
      */
-    public static String decrypt(byte[] input, byte[] key) {
-        byte[] decryptResult = aes(input, key, Cipher.DECRYPT_MODE);
-        return new String(decryptResult);
+    public static String decrypt(String ciphertext, String key) {
+        Preconditions.checkArgument(StringUtils.isNotBlank(ciphertext), "ciphertext is blank");
+        Preconditions.checkArgument(StringUtils.isNotBlank(key), "aes key is blank");
+        byte[] plainData = decrypt(ciphertext.getBytes(CHARSET_DEFAULT), key.getBytes(CHARSET_DEFAULT));
+        return new String(plainData);
     }
 
     /**
      * 使用AES解密字符串, 返回原始字符串.
      *
-     * @param input Hex编码的加密字符串
+     * @param ciphertext 密文byte数组
      * @param key   符合AES要求的密钥
      * @param iv    初始向量
+     * @return 解密后的byte数组
      */
-    public static String decrypt(byte[] input, byte[] key, byte[] iv) {
-        byte[] decryptResult = aes(input, key, iv, Cipher.DECRYPT_MODE);
-        return new String(decryptResult);
+    public static String decrypt(String ciphertext, String key, String iv) {
+        Preconditions.checkArgument(StringUtils.isNotBlank(ciphertext), "ciphertext is blank");
+        Preconditions.checkArgument(StringUtils.isNotBlank(key), "aes key is blank");
+        Preconditions.checkArgument(StringUtils.isNotBlank(key), "aes iv is blank");
+        byte[] plainData = decrypt(ciphertext.getBytes(CHARSET_DEFAULT), key.getBytes(CHARSET_DEFAULT), iv.getBytes(CHARSET_DEFAULT));
+        return new String(plainData);
+    }
+
+    /**
+     * 使用AES加密原始字符串.
+     *
+     * @param plaintext 明文
+     * @param key   符合AES要求的密钥
+     * @return 密文的byte数组
+     */
+    public static byte[] encrypt(byte[] plaintext, byte[] key) {
+        return aes(plaintext, key, Cipher.ENCRYPT_MODE);
+    }
+
+    /**
+     * 使用AES加密原始字符串.
+     *
+     * @param plaintext 明文
+     * @param key   符合AES要求的密钥
+     * @param iv    初始向量
+     * @return 密文byte数组
+     */
+    public static byte[] encrypt(byte[] plaintext, byte[] key, byte[] iv) {
+        return aes(plaintext, key, iv, Cipher.ENCRYPT_MODE);
+    }
+
+    /**
+     * 使用AES解密字符串, 返回原始字符串.
+     *
+     * @param ciphertext 密文byte数组
+     * @param key   符合AES要求的密钥
+     * @return 明文byte数组
+     */
+    public static byte[] decrypt(byte[] ciphertext, byte[] key) {
+        return aes(ciphertext, key, Cipher.DECRYPT_MODE);
+    }
+
+    /**
+     * 使用AES解密字符串, 返回原始字符串.
+     *
+     * @param ciphertext 密文byte数组
+     * @param key   符合AES要求的密钥
+     * @param iv    初始向量
+     * @return 解密后的byte数组
+     */
+    public static byte[] decrypt(byte[] ciphertext, byte[] key, byte[] iv) {
+        return aes(ciphertext, key, iv, Cipher.DECRYPT_MODE);
     }
 
     /**

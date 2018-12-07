@@ -31,14 +31,14 @@ public class AESUtilsTest {
     @Test
     public void encryptAndDecrypt() {
         byte[] cipherData = AESUtils.encrypt(source.getBytes(), key);
-        String sourceData = AESUtils.decrypt(cipherData, key);
+        String sourceData = new String(AESUtils.decrypt(cipherData, key));
         assertEquals(sourceData, source);
     }
 
     @Test
     public void encryptAndDecrypt2() {
         byte[] cipherData = AESUtils.encrypt(source.getBytes(), key, iv);
-        String sourceData = AESUtils.decrypt(cipherData, key, iv);
+        String sourceData = new String(AESUtils.decrypt(cipherData, key, iv));
         assertEquals(sourceData, source);
     }
 

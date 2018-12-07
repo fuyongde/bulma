@@ -1,7 +1,6 @@
 package com.sunflower.bulma.tools.security;
 
 import com.sunflower.bulma.tools.Exceptions;
-import lombok.NonNull;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
@@ -45,7 +44,7 @@ public final class Encodes {
      * @param input 原字符串
      * @return 解码后的byte数组
      */
-    public static byte[] decodeHex(@NonNull String input) {
+    public static byte[] decodeHex(String input) {
         try {
             return Hex.decodeHex(input.toCharArray());
         } catch (DecoderException e) {
@@ -79,7 +78,7 @@ public final class Encodes {
      * @param input 原字符串
      * @return 原byte数组
      */
-    public static byte[] decodeBase64(@NonNull String input) {
+    public static byte[] decodeBase64(String input) {
         return Base64.decodeBase64(input);
     }
 
@@ -103,7 +102,7 @@ public final class Encodes {
      * @param html 原HTML
      * @return 转码后的值
      */
-    public static String escapeHtml(@NonNull String html) {
+    public static String escapeHtml(String html) {
         return StringEscapeUtils.escapeHtml4(html);
     }
 
@@ -113,7 +112,7 @@ public final class Encodes {
      * @param htmlEscaped 编码后的HMTL
      * @return 原HTML
      */
-    public static String unescapeHtml(@NonNull String htmlEscaped) {
+    public static String unescapeHtml(String htmlEscaped) {
         return StringEscapeUtils.unescapeHtml4(htmlEscaped);
     }
 
@@ -123,7 +122,7 @@ public final class Encodes {
      * @param xml 编码前的XML
      * @return 编码后的XML
      */
-    public static String escapeXml(@NonNull String xml) {
+    public static String escapeXml(String xml) {
         return StringEscapeUtils.escapeXml11(xml);
     }
 
@@ -133,7 +132,7 @@ public final class Encodes {
      * @param xmlEscaped 编码后的XML
      * @return 解码后的XML
      */
-    public static String unescapeXml(@NonNull String xmlEscaped) {
+    public static String unescapeXml(String xmlEscaped) {
         return StringEscapeUtils.unescapeXml(xmlEscaped);
     }
 
@@ -143,7 +142,7 @@ public final class Encodes {
      * @param part 原URL
      * @return 编码后的URL
      */
-    public static String urlEncode(@NonNull String part) {
+    public static String urlEncode(String part) {
         try {
             return URLEncoder.encode(part, DEFAULT_URL_ENCODING);
         } catch (UnsupportedEncodingException e) {
@@ -157,7 +156,7 @@ public final class Encodes {
      * @param part 编码后的URL
      * @return 原URL
      */
-    public static String urlDecode(@NonNull String part) {
+    public static String urlDecode(String part) {
         try {
             return URLDecoder.decode(part, DEFAULT_URL_ENCODING);
         } catch (UnsupportedEncodingException e) {

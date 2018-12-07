@@ -28,7 +28,7 @@ public class DESUtilsTest {
     @Test
     public void encryptAndDecrypt() {
         byte[] cipherData = DESUtils.encrypt(source.getBytes(), key);
-        String sourceData = DESUtils.decrypt(cipherData, key);
+        String sourceData = new String(DESUtils.decrypt(cipherData, key));
         assertEquals(sourceData, source);
     }
 

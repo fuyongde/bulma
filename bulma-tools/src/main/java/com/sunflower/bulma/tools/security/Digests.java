@@ -2,7 +2,7 @@ package com.sunflower.bulma.tools.security;
 
 import com.google.common.base.Preconditions;
 import com.sunflower.bulma.tools.Exceptions;
-import lombok.NonNull;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,7 +15,7 @@ import java.security.SecureRandom;
  * <p>
  * 返回ByteSource，可进一步被编码为Hex, Base64或UrlSafeBase64
  *
- * @author calvin
+ * @author fuyongde
  */
 public final class Digests {
 
@@ -30,8 +30,29 @@ public final class Digests {
     /**
      * 对输入字符串进行sha1散列.
      */
+    public static byte[] sha1(String input) {
+        return DigestUtils.sha1(input);
+    }
+
+    /**
+     * 对输入字符串进行sha1散列.
+     */
     public static byte[] sha1(byte[] input) {
-        return digest(input, SHA1, null, 1);
+        return DigestUtils.sha1(input);
+    }
+
+    /**
+     * 对输入字符串进行sha1散列.
+     */
+    public static String sha1Hex(String input) {
+        return DigestUtils.sha1Hex(input);
+    }
+
+    /**
+     * 对输入字符串进行sha1散列.
+     */
+    public static String sha1Hex(byte[] input) {
+        return DigestUtils.sha1Hex(input);
     }
 
     public static byte[] sha1(byte[] input, byte[] salt) {
@@ -45,7 +66,7 @@ public final class Digests {
     /**
      * 对字符串进行散列, 支持md5与sha1算法.
      */
-    private static byte[] digest(byte[] input, @NonNull String algorithm, byte[] salt, int iterations) {
+    private static byte[] digest(byte[] input, String algorithm, byte[] salt, int iterations) {
         try {
             MessageDigest digest = MessageDigest.getInstance(algorithm);
 
@@ -72,7 +93,6 @@ public final class Digests {
      */
     public static byte[] generateSalt(int numBytes) {
         Preconditions.checkArgument(numBytes > 0, "numBytes argument must be a positive integer (1 or larger)", numBytes);
-
         byte[] bytes = new byte[numBytes];
         random.nextBytes(bytes);
         return bytes;
@@ -81,18 +101,60 @@ public final class Digests {
     /**
      * 对文件进行md5散列.
      */
-    public static byte[] md5(@NonNull InputStream input) throws IOException {
-        return digest(input, MD5);
+    public static byte[] md5(InputStream input) throws IOException {
+        return DigestUtils.md5(input);
+    }
+
+    /**
+     * 对文本进行md5散列.
+     *
+     * @param input 文本
+     * @return
+     * @throws IOException
+     */
+    public static byte[] md5(String input) {
+        return DigestUtils.md5(input);
+    }
+
+    /**
+     * 对文本进行md5散列.
+     *
+     * @param input 文本
+     * @return MD5值
+     */
+    public static byte[] md5(byte[] input) {
+        return DigestUtils.md5(input);
+    }
+
+    /**
+     * 对文本进行md5散列.
+     *
+     * @param input 文本
+     * @return
+     * @throws IOException
+     */
+    public static String md5Hex(String input) {
+        return DigestUtils.md5Hex(input);
+    }
+
+    /**
+     * 对文本进行md5散列.
+     *
+     * @param input 文本
+     * @return MD5值
+     */
+    public static String md5Hex(byte[] input) {
+        return DigestUtils.md5Hex(input);
     }
 
     /**
      * 对文件进行sha1散列.
      */
-    public static byte[] sha1(@NonNull InputStream input) throws IOException {
-        return digest(input, SHA1);
+    public static byte[] sha1(InputStream input) throws IOException {
+        return DigestUtils.sha1(input);
     }
 
-    private static byte[] digest(@NonNull InputStream input, @NonNull String algorithm) throws IOException {
+    private static byte[] digest(InputStream input, String algorithm) throws IOException {
         try {
             MessageDigest messageDigest = MessageDigest.getInstance(algorithm);
             int bufferLength = 8 * 1024;
