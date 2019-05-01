@@ -11,7 +11,7 @@ import java.nio.charset.Charset;
  * @date 2018-12-01
  * @desc DES加解密
  */
-public class DESUtils extends AbstractSecurity {
+public class DesUtils extends AbstractSecurity {
 
     private static final String DES = "DES";
     private static final int DES_KEY_SIZE_DEFAULT = 56;
@@ -27,7 +27,7 @@ public class DESUtils extends AbstractSecurity {
      * @return
      */
     public static String encrypt(String plaintext, String key) {
-        byte[] cipherBytes = encrypt(plaintext.getBytes(CHARSET_DEFAULT), key.getBytes(CHARSET_DEFAULT));
+        byte[] cipherBytes = encrypt(plaintext.getBytes(CHARSET_DEFAULT), Base64.decodeBase64(key));
         return Base64.encodeBase64String(cipherBytes);
     }
 
@@ -40,7 +40,7 @@ public class DESUtils extends AbstractSecurity {
      * @return
      */
     public static String encrypt(String plaintext, String key, String iv) {
-        byte[] cipherBytes = encrypt(plaintext.getBytes(CHARSET_DEFAULT), key.getBytes(CHARSET_DEFAULT), iv.getBytes(CHARSET_DEFAULT));
+        byte[] cipherBytes = encrypt(plaintext.getBytes(CHARSET_DEFAULT), Base64.decodeBase64(key), Base64.decodeBase64(iv));
         return Base64.encodeBase64String(cipherBytes);
     }
 
@@ -68,25 +68,25 @@ public class DESUtils extends AbstractSecurity {
     /**
      * 使用AES解密字符串, 返回原始字符串.
      *
-     * @param ciphertext 密文
+     * @param cipherText 密文
      * @param key        符合AES要求的密钥
      * @return
      */
-    public static String decrypt(String ciphertext, String key) {
-        byte[] decryptResult = decrypt(ciphertext.getBytes(CHARSET_DEFAULT), key.getBytes(CHARSET_DEFAULT));
+    public static String decrypt(String cipherText, String key) {
+        byte[] decryptResult = decrypt(Base64.decodeBase64(cipherText), Base64.decodeBase64(key));
         return new String(decryptResult);
     }
 
     /**
      * 使用AES解密字符串, 返回原始字符串.
      *
-     * @param ciphertext 密文
+     * @param cipherText 密文
      * @param key        符合AES要求的密钥
      * @param iv         初始向量
      * @return 原文
      */
-    public static String decrypt(String ciphertext, String key, String iv) {
-        byte[] decryptResult = decrypt(ciphertext.getBytes(CHARSET_DEFAULT), key.getBytes(CHARSET_DEFAULT), iv.getBytes(CHARSET_DEFAULT));
+    public static String decrypt(String cipherText, String key, String iv) {
+        byte[] decryptResult = decrypt(Base64.decodeBase64(cipherText), Base64.decodeBase64(key), Base64.decodeBase64(iv));
         return new String(decryptResult);
     }
 
@@ -142,9 +142,9 @@ public class DESUtils extends AbstractSecurity {
     }
 
     /**
-     * 生成AES密钥
+     * 生成DES密钥
      *
-     * @param keySize 长度，可选长度为128,192,256位
+     * @param keySize 长度，可选长度为56位
      * @return 密钥
      */
     public static byte[] generateDesKey(int keySize) {

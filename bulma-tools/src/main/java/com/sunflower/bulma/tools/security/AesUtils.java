@@ -14,7 +14,7 @@ import java.security.SecureRandom;
  * @date 2018-12-01
  * @desc AES加解密工具
  */
-public final class AESUtils extends AbstractSecurity {
+public final class AesUtils extends AbstractSecurity {
 
     private static final String AES = "AES";
     private static final int AES_KEY_SIZE_DEFAULT = 128;
@@ -25,7 +25,7 @@ public final class AESUtils extends AbstractSecurity {
     private static final int AES_IV_SIZE_DEFAULT = 16;
     private static SecureRandom random = new SecureRandom();
 
-    private AESUtils() {
+    private AesUtils() {
     }
 
 
@@ -39,7 +39,7 @@ public final class AESUtils extends AbstractSecurity {
     public static String encrypt(String plaintext, String key) {
         Preconditions.checkArgument(StringUtils.isNotBlank(plaintext), "plaintext is blank");
         Preconditions.checkArgument(StringUtils.isNotBlank(key), "aes key is blank");
-        byte[] cipherData = encrypt(plaintext.getBytes(CHARSET_DEFAULT), key.getBytes(CHARSET_DEFAULT));
+        byte[] cipherData = encrypt(plaintext.getBytes(CHARSET_DEFAULT), Base64.decodeBase64(key));
         return Base64.encodeBase64String(cipherData);
     }
 
@@ -55,37 +55,37 @@ public final class AESUtils extends AbstractSecurity {
         Preconditions.checkArgument(StringUtils.isNotBlank(plaintext), "plaintext is blank");
         Preconditions.checkArgument(StringUtils.isNotBlank(key), "aes key is blank");
         Preconditions.checkArgument(StringUtils.isNotBlank(key), "aes iv is blank");
-        byte[] cipherData = encrypt(plaintext.getBytes(CHARSET_DEFAULT), key.getBytes(CHARSET_DEFAULT), iv.getBytes(CHARSET_DEFAULT));
+        byte[] cipherData = encrypt(plaintext.getBytes(CHARSET_DEFAULT), Base64.decodeBase64(key), Base64.decodeBase64(iv));
         return Base64.encodeBase64String(cipherData);
     }
 
     /**
      * 使用AES解密字符串, 返回原始字符串.
      *
-     * @param ciphertext 密文byte数组
+     * @param cipherText 密文byte数组
      * @param key   符合AES要求的密钥
      * @return 明文byte数组
      */
-    public static String decrypt(String ciphertext, String key) {
-        Preconditions.checkArgument(StringUtils.isNotBlank(ciphertext), "ciphertext is blank");
+    public static String decrypt(String cipherText, String key) {
+        Preconditions.checkArgument(StringUtils.isNotBlank(cipherText), "ciphertext is blank");
         Preconditions.checkArgument(StringUtils.isNotBlank(key), "aes key is blank");
-        byte[] plainData = decrypt(ciphertext.getBytes(CHARSET_DEFAULT), key.getBytes(CHARSET_DEFAULT));
+        byte[] plainData = decrypt(Base64.decodeBase64(cipherText), Base64.decodeBase64(key));
         return new String(plainData);
     }
 
     /**
      * 使用AES解密字符串, 返回原始字符串.
      *
-     * @param ciphertext 密文byte数组
+     * @param cipherText 密文byte数组
      * @param key   符合AES要求的密钥
      * @param iv    初始向量
      * @return 解密后的byte数组
      */
-    public static String decrypt(String ciphertext, String key, String iv) {
-        Preconditions.checkArgument(StringUtils.isNotBlank(ciphertext), "ciphertext is blank");
+    public static String decrypt(String cipherText, String key, String iv) {
+        Preconditions.checkArgument(StringUtils.isNotBlank(cipherText), "ciphertext is blank");
         Preconditions.checkArgument(StringUtils.isNotBlank(key), "aes key is blank");
         Preconditions.checkArgument(StringUtils.isNotBlank(key), "aes iv is blank");
-        byte[] plainData = decrypt(ciphertext.getBytes(CHARSET_DEFAULT), key.getBytes(CHARSET_DEFAULT), iv.getBytes(CHARSET_DEFAULT));
+        byte[] plainData = decrypt(Base64.decodeBase64(cipherText), Base64.decodeBase64(key), Base64.decodeBase64(iv));
         return new String(plainData);
     }
 

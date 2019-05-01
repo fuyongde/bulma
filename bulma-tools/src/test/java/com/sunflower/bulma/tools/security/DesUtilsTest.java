@@ -11,14 +11,14 @@ import static org.junit.Assert.assertEquals;
  * @date 2018-12-01
  * @desc DES加解密
  */
-public class DESUtilsTest {
+public class DesUtilsTest {
 
     private byte[] key;
     private String source = "fuyongde";
 
     @Before
     public void setUp() throws Exception {
-        key = DESUtils.generateDesKey();
+        key = DesUtils.generateDesKey();
     }
 
     @After
@@ -27,8 +27,8 @@ public class DESUtilsTest {
 
     @Test
     public void encryptAndDecrypt() {
-        byte[] cipherData = DESUtils.encrypt(source.getBytes(), key);
-        String sourceData = new String(DESUtils.decrypt(cipherData, key));
+        byte[] cipherData = DesUtils.encrypt(source.getBytes(), key);
+        String sourceData = new String(DesUtils.decrypt(cipherData, key));
         assertEquals(sourceData, source);
     }
 
