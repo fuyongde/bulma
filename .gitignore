@@ -1,6 +1,5 @@
 .idea
 *.log
-/bulma-parent/bulma-parent.iml
-
-/bulma-tools/bulma-tools.iml
-/bulma-tools/target
+*.iml
+target
+logs

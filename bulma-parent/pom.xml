@@ -196,7 +196,7 @@
         <executions>
           <execution>
             <goals>
-              <goal>check</goal>
+              <goal>pmd</goal>
             </goals>
           </execution>
         </executions>
