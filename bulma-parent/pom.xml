@@ -26,6 +26,7 @@
     <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
     <maven-javadoc-plugin.version>3.0.1</maven-javadoc-plugin.version>
     <maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
+    <maven-pmd-plugin.version>3.8</maven-pmd-plugin.version>
 
     <!--dependencies properties-->
     <junit.version>4.12</junit.version>
@@ -164,7 +165,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-pmd-plugin</artifactId>
-          <version>3.8</version>
+          <version>${maven-pmd-plugin.version}</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -177,7 +178,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
-        <version>3.8</version>
         <configuration>
           <rulesets>
             <ruleset>rulesets/java/ali-comment.xml</ruleset>
